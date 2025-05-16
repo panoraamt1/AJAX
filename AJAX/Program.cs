@@ -17,6 +17,7 @@ namespace AJAX
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("ConnectionString:DbConn").Value));
 
             var app = builder.Build();
 
