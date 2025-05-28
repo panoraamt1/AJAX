@@ -103,5 +103,20 @@ namespace AjaxCustomerCRUD.Controllers
             lstCountries.Insert(0, defItem);
             return lstCountries;
         }
+
+
+        [HttpGet]
+        public JsonResult GetCitiesByCountry(int countryId)
+        {
+            List<SelectListItem> cities = _context.Cities
+                .Where(c => c.CountryId == countryId)
+                .OrderBy(n => n.Name).
+                Select(n => new SelectListItem 
+                { 
+                    Value = n.Id.ToString(), 
+                    Text = n.Name 
+                }).ToList();
+            return Json(cities);
+        }
     }
 }
