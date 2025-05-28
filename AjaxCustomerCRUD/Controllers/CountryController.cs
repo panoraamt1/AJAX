@@ -1,6 +1,7 @@
 ﻿using AjaxCustomerCRUD.Data;
 using AjaxCustomerCRUD.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AjaxCustomerCRUD.Controllers
@@ -35,6 +36,19 @@ namespace AjaxCustomerCRUD.Controllers
             _context.Add(country);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public IActionResult CreateModalFrom()
+        {
+            Country country = new Country();
+            return PartialView("_CreateModalForm", country);
+        }
+        [HttpPost]
+        public IActionResult CreateModalForm(Country country)
+        {
+            _context.Add(country);
+            _context.SaveChanges();
+            return NoContent();
         }
         [HttpGet]
         public IActionResult Details(int Id)
@@ -96,6 +110,16 @@ namespace AjaxCustomerCRUD.Controllers
                 return View(country);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public JsonResult GetCountries()
+        {
+            var lstCountries = new List<SelectListItem>();
+            List<Country> Countries = _context.Countries.ToList();
+            lstCountries = Countries.Select(ct => new SelectListItem() { Value = ct.Id.ToString(), Text = ct.Name }).ToList();
+            var defItem = new SelectListItem() { Value = "", Text = "----Select Country----" };
+            lstCountries.Insert(0,defItem);
+            return Json(lstCountries);
         }
     }
 }

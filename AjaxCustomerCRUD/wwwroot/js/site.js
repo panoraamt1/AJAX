@@ -32,3 +32,41 @@ $(".custom-file-input").on("change", function () {
     document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files[0]);
     document.getElementById('PhotoUrl').value = fileName;
 });
+
+function ShowCreateModalFrom() {
+    $("#DivCreateDialogHolder").modal('show');
+    return;
+}
+
+function submitModalForm() {
+    var btnSubmit = document.getElementById('btnSubmit');
+    btnSubmit.click();
+}
+
+function refreshCountruyList() {
+    var btnBack = document.getElementById('dubBackBtn');
+    btnBack.click();
+    FillCountries("lstCountryId");
+}
+
+function FillCountries(lstCountryId) {
+    var lstCountries = $("#" + lstCountryId);
+    lstCountries.empty();
+    lstCountries.append($('<option/>',
+        {
+            value: null,
+            text: "Select Country"
+        }));
+    $.getJSON("/country/GetCountries", function (countries) {
+        if (selectedContry != null && !jQuery.isEmptyObject(countries)) {
+            $.each(countries, function (index, country) {
+                lstCountries.append($('<option/>',
+                    {
+                        value: country.value,
+                        text: country.text
+                    }));
+            });
+        };
+    });
+    return;
+}

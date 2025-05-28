@@ -1,0 +1,109 @@
+﻿@model AjaxCustomerCRUD.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Delete</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete" enctype="multipart/from-data">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control from-control-plaintext" readonly/>
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" class="form-control from-control-plaintext" readonly />
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailId" class="control-label"></label>
+            <input asp-for="EmailId" class="form-control from-control-plaintext" readonly />
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+            <input asp-for="@Model.City.Country.Name" class="form-control from-control-plaintext" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+            <input asp-for="@Model.City.Name" class="form-control from-control-plaintext" readonly />
+            </div>
+            
+            <div class="col-md-12 btn-group pb-2">
+                <div class="from-group col-4 p-0">
+                    <label asp-for="ProfilePhoto" class="control-label"></label>
+                    <img id="PreviwPhoto" scr="~/Images/@Model.PhotoUrl" alt="Logo Image" width="125" height="125" />
+                    
+                </div>
+                <div class="col-1 p-0"></div>
+                
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+
+            <div class="form-group pt-0 mt-0">
+                <div id="HiddenDiv" style="visibility:hidden;">
+                    <input asp-for="PhotoUrl" id="PhotoUrl"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+    function FillCities(lstCountryCtrl, lstCityId) 
+    {
+     var lstCities = $("#"+lstCityId);
+     lstCities.empty();
+     lstCities.append($('<option/>',
+      {
+       value: null,
+       text: "Select City"
+      }));
+     var selectedContry = lstCountryCtrl.options[lstCountryCtrl.selectedIndex].value;
+     if (selectedContry != null && selectedContry != '')
+      {
+       $.getJSON('@Url.Action("GetCitiesByCountry")', {CountryId: selectedcountry}, function (cities)
+        {
+         if (cities != null && !jQuery.isEmptyObject(cities))
+          {
+           $.each(cities, function (index, city)
+            {
+             lstCities.append($('<option/>',
+              {
+               value: city.value,
+               text: city.text
+              }));
+             });
+          };
+        });
+       }
+      return;
+    }
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files[0]);
+            document. getElementById('PhotoUrl').value = fileName;
+        });
+
+    </script>
+
+}
