@@ -50,7 +50,7 @@ namespace AjaxCustomerCRUD.Controllers
         [HttpPost]
         public IActionResult Details(int Id)
         {
-            Customer customer = _context.Customers.Where(c => c.Id == Id).FirstOrDefault();
+            Customer customer = _context.Customers.Include(cty => cty.City).Include(cou => cou.City.Country).Where(c => c.Id == Id).FirstOrDefault();
 
             return View(customer);
         }
@@ -73,6 +73,12 @@ namespace AjaxCustomerCRUD.Controllers
 
         public IActionResult Edit(Customer customer)
         {
+            if (customer.ProfilePhoto != null)
+            {
+                string uniqueFileName = GetProfilePhotoFileName(customer);
+                customer.PhotoUrl = uniqueFileName;
+            }
+
             _context.Attach(customer);
             _context.Entry(customer).State = EntityState.Modified;
             _context.SaveChanges();
