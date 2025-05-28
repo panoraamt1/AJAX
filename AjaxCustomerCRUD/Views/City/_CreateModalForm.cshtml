@@ -1,10 +1,10 @@
-﻿@model AjaxCustomerCRUD.Models.Country
+﻿@model AjaxCustomerCRUD.Models.City
 
-<h4>Country</h4>
+<h4>City</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateModalFrom" data-ajax="true" data-ajax-success="refreshCountryList();">
+        <form asp-action="CreateModalForm" data-ajax="true" data-ajax-success="refreshCityList();">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Code" class="control-label"></label>
@@ -17,9 +17,9 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CurrencyName" class="control-label"></label>
-                <input asp-for="CurrencyName" class="form-control" />
-                <span asp-validation-for="CurrencyName" class="text-danger"></span>
+                <label asp-for="CountryId" class="control-label"></label>
+                <input type="hidden" asp-for="CountryId" class="from-control" />
+                <input asp-for="CountryName" class="from-control" readonly />
             </div>
             <div class="form-group" style="display:none">
                 <input id="btnSubmit" type="submit" value="Create" class="btn btn-primary" />
