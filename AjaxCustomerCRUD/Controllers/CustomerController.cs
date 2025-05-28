@@ -58,9 +58,13 @@ namespace AjaxCustomerCRUD.Controllers
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            Customer customer = _context.Customers.Where(c => c.Id == Id).FirstOrDefault();
+            Customer customer = _context.Customers
+                .Include(co => co.City)
+                .Where(c => c.Id == Id).FirstOrDefault();
+            customer.CountryId = customer.City.CountryId;
 
             ViewBag.Countries = GetCountries();
+            ViewBag.Cities = GetCities(customer.CountryId);
             return View(customer);
         }
 
@@ -141,6 +145,18 @@ namespace AjaxCustomerCRUD.Controllers
                 }
             }
             return uniqueFileName;
+        }
+
+        private List<SelectListItem> GetCities(int countryId)
+        {
+            List<SelectListItem> cities = _context.Cities.Where(c => c.CountryId == countryId).OrderBy(n => n.Name).Select(n =>
+            new SelectListItem
+            {
+                Value = n.Id.ToString(),
+                Text = n.Name
+            }).ToList();
+
+            return cities;
         }
 
 
