@@ -32,6 +32,7 @@ namespace AjaxCustomerCRUD.Controllers
         {
             Customer Customer = new Customer();
             ViewBag.Countries = GetCountries();
+            ViewBag.Cities = new List<SelectListItem>();
             return View(Customer);
         }
 

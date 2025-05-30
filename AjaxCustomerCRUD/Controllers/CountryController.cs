@@ -3,6 +3,7 @@ using AjaxCustomerCRUD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace AjaxCustomerCRUD.Controllers
 {
@@ -38,7 +39,7 @@ namespace AjaxCustomerCRUD.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public IActionResult CreateModalFrom()
+        public IActionResult CreateModalForm()
         {
             Country country = new Country();
             return PartialView("_CreateModalForm", country);

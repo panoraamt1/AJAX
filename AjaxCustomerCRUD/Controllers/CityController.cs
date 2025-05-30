@@ -3,6 +3,7 @@ using AjaxCustomerCRUD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace AjaxCustomerCRUD.Controllers
 {
@@ -33,6 +34,33 @@ namespace AjaxCustomerCRUD.Controllers
             _context.Add(City);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult CreateModalForm(int countryId)
+        {
+
+            City city = new City();
+            city.CountryId = countryId;
+            city.CountryName = GetCountryName(countryId);
+            return PartialView("_CreateModalForm", city);
+        }
+
+        [HttpPost]
+
+        public IActionResult CreateModalForm(City city)
+        {
+            _context.Add(city);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        private string GetCountryName(int countryId)
+        {
+            if (countryId == 0)
+                return "";
+            string strCountryName = _context.Countries.Where(ct => ct.Id == countryId).Select(nm => nm.Name).Single().ToString();
+            return strCountryName;
         }
 
         [HttpGet]
@@ -97,33 +125,6 @@ namespace AjaxCustomerCRUD.Controllers
             };
             lstCountries.Insert(0, defItem);
             return lstCountries;
-        }
-
-        [HttpGet]
-        public IActionResult CreateModalForm(int countryId)
-        {
-
-            City city = new City();
-            city.CountryId = countryId;
-            city.CountryName = GetCountryName(countryId); 
-            return PartialView("_CreateModalForm", city);
-        }
-
-        [HttpPost]
-        
-        public IActionResult CreateModalForm(City city)
-        {
-            _context.Add(city);
-            _context.SaveChanges(); 
-            return NoContent();
-        }
-
-        private string GetCountryName(int countryId)
-        {
-            if (countryId == 0)
-                return "";
-            string strCountryName = _context.Countries.Where(ct => ct.Id == countryId).Select(nm => nm.Name).Single().ToString();
-            return strCountryName;
         }
     }
 }
