@@ -23,13 +23,14 @@
     }
 </style>
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Customer</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/from-data">
+        <form asp-action="Edit" enctype="multipart/from-data">
+            <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -46,30 +47,19 @@
                 <input asp-for="EmailId" class="form-control" />
                 <span asp-validation-for="EmailId" class="text-danger"></span>
             </div>
-            <div class="from-group btn-group col-12">
-                <div class="col-11">
-                    <label asp-for="CountryId" class="control-label"></label>
-                    <select id="lstCountryId" asp-for="CountryId" class="form-control" asp-items="ViewBag.Countries" onchange="FillCities(this,'lstCity');"></select>
-                    <span asp-validation-for="CountryId" class="text-danger"></span>
-                </div>
-                <div class="col-1 mt-4">
-                    <button class="btn btn-success" onclick="ShowCountryCreateModal();">+</button>
-                </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.Countries" onchange="FillCities(this,'lstCity');"></select>
             </div>
-            <div class="from-group btn-group col-12">
-            <div class="col-11">
+            <div class="form-group">
                 <label asp-for="CityId" class="control-label"></label>
-                <select id="lstCity" asp-for="CityId" class ="form-control" asp-items="ViewBag.Cities"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
+                <select id="lstCity" asp-for="CityId" class="form-control" asp-items="ViewBag.Cities"></select>
             </div>
-            <div class="col-1 mt-4">
-                <button class="btn btn-success" onclick="ShowCityyCreateModal();">+</button>
-            </div>
-            </div>
+            
             <div class="col-md-12 btn-group pb-2">
                 <div class="from-group col-4 p-0">
                     <label asp-for="ProfilePhoto" class="control-label"></label>
-                    <img id="PreviwPhoto" scr="~/images/noimages.png" alt="Logo Image" width="125" height="125" />
+                    <img id="PreviwPhoto" scr="~/Images/@Model.PhotoUrl" alt="Logo Image" width="125" height="125" />
                     <snap aps-validation-for="PhotoUrl" class="text-danger"></snap>
                 </div>
                 <div class="col-1 p-0"></div>
@@ -82,12 +72,12 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
 
             <div class="form-group pt-0 mt-0">
                 <div id="HiddenDiv" style="visibility:hidden;">
-                    <input asp-for="PhotoUrl" id="PhotoUrl" value="" />
+                    <input asp-for="PhotoUrl" id="PhotoUrl" />
                 </div>
             </div>
         </form>
@@ -102,19 +92,41 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="text/javascript">
-    
-        function ShowContryCreateModal() {
-            $.ajax(
-                {
-                    url: "/country/CreateModalForm",
-                    type: 'get',
-                    success: function (response) {
-                        $("#DivCreateDialog").html(response);
-                        ShowCreateModalForm();
-                    }
-            });
-            return;
-        }
+    function FillCities(lstCountryCtrl, lstCityId) 
+    {
+     var lstCities = $("#"+lstCityId);
+     lstCities.empty();
+     lstCities.append($('<option/>',
+      {
+       value: null,
+       text: "Select City"
+      }));
+     var selectedContry = lstCountryCtrl.options[lstCountryCtrl.selectedIndex].value;
+     if (selectedContry != null && selectedContry != '')
+      {
+       $.getJSON('@Url.Action("GetCitiesByCountry")', {CountryId: selectedcountry}, function (cities)
+        {
+         if (cities != null && !jQuery.isEmptyObject(cities))
+          {
+           $.each(cities, function (index, city)
+            {
+             lstCities.append($('<option/>',
+              {
+               value: city.value,
+               text: city.text
+              }));
+             });
+          };
+        });
+       }
+      return;
+    }
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files[0]);
+            document. getElementById('PhotoUrl').value = fileName;
+        });
 
     </script>
 

@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div id="DivCreateDialogHoler" class="modal fade text-width:30%;" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create</h2>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div id="DivCreateDialog" class="modal-body"></div>
+            <div class="modal-footer">
+                @* <button type="button" class="btn btn-danger" data-icon="Close" data-bs-dismiss="modal">Close</button> *@
+                <div class="btn-group">
+                    <div>
+                        <button id="dupBackBtn" type="button" class="btn btn-danger" data-icon="back" data-bs-dismiss="modal">Back</button>
+                    </div>
+                    <div class="ml-4">
+                        <input id="dubSubmitBtn" type="button" value="Save" class="btn btn-primary" onclick="submitModalForm()"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model AdvancedAJAX.Models.Country
+
+<h4>Country</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateModalForm" data-ajax="true" data-ajax-success="refreshCountryList(response.id, response.name);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrencyName" class="control-label"></label>
+                <input asp-for="CurrencyName" class="form-control" />
+                <span asp-validation-for="CurrencyName" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none;">
+                <input id="btnSubmitCountry" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

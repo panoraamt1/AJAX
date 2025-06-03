@@ -1,0 +1,90 @@
+﻿@model AdvancedAJAX.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Details</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control form-control-plaintext" readonly />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" class="form-control form-control-plaintext" readonly />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailId" class="control-label"></label>
+            <input asp-for="EmailId" class="form-control form-control-plaintext" readonly />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+            <input asp-for="@Model.City.Country.Name" class="form-control form-control-plaintext" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+            <input asp-for="@Model.City.Name" class="form-control form-control-plaintext" readonly />
+
+            </div>
+
+            <div class="col-md-12 btn-group pb-2">
+
+                <div class="form-group col-4 p-0">
+
+                    <label asp-for="ProfilePhoto" class="control-label"></label>
+
+                    <img id="PreviewPhoto" src="~/images/@Model.PhotoUrl" alt="Logo Image"
+                            width="125" height="125"/>
+
+
+
+                </div>
+
+                <div class="col-1 p-0">
+                </div>
+
+
+                        </div>
+
+            <div class="form-group">
+              <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            </div>
+
+            <div class="form-group pt-0 mt-0">
+                <div id="HiddenDiv" style="visibility: hidden;">
+                    <input asp-for="PhotoUrl" id="PhotoUrl" />
+                </div>
+            </div>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+      
+
+
+</script>
+
+}
